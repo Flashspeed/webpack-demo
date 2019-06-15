@@ -1,26 +1,21 @@
 import _ from 'lodash';
-import './style.css';
-import ImageLew from './lew.png';
-import DataFile from './data.xml';
+import printMe from './print'
 
 function component() {
     // Create a div
     const element = document.createElement('div');
 
+    // Create button
+    const btn = document.createElement('button');
+
     // Add "Hello webpack" text inside the div
     // Lodash, currently included via a script, is required for this line to work
     element.innerHTML = _.join(['Hello', 'webpack'], ' ');
-    // Add a class named "hello" to the div
-    element.classList.add("hello");
 
-    // Create an image element
-    const imageOfLew = new Image();
-    imageOfLew.src = ImageLew;
+    btn.innerHTML = "Click me and check the console";
+    btn.onclick = printMe;
 
-    // Append image element to the existing div
-    element.appendChild(imageOfLew);
-
-    console.log(DataFile);
+    element.appendChild(btn);
 
     return element;
 }

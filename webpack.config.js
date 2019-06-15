@@ -1,45 +1,44 @@
-const path = require('path');
+const path                 = require('path');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
+
+// Link: https://webpack.js.org/plugins/html-webpack-plugin/
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: {
+        //Webpack will parse these files and add them to the output folder which in this case is 'dist'
+        app: './src/index.js',
+        print: './src/print.js'
+    },
     output: {
         // The name of the final js file to be embedded into the main html file
-        filename: "bundle.js",
+        /* Webpack will generate a separate file for each key in the 'entry' object.
+         * It will replace the [name] placeholder with the key(s) in the 'entry' object.
+         * In this case there are 2 keys "app" and "print". The generated file names will be
+         * 'app.bundle.js' and 'print.bundle.js'.
+         * Link: https://webpack.js.org/configuration/output/#outputfilename
+         */
+        filename: "[name].bundle.js",
+
+        // ALL the translated code will be put inside a folder named 'dist'. Can be named anything.
         path: path.resolve(__dirname, 'dist')
     },
-    module: {
-        rules: [
-            {
-                // Test to see if this condition is met. Condition: if a file ends with '.css'
-                /* Webpack uses a regular expression to determine which files it should look for
-                   and serve to a specific loader
-               */
-                test: /\.css$/,
+    plugins: [
+        // Remove any unused files in the 'dist' directory before building
+        new CleanWebpackPlugin(),
 
-                //Webpack loaders are read from last to first. Here 'css-loader' runs before 'style-loader'
-                use: [
-                    'style-loader', // Includes the parsed css into the DOM by injecting a <style> tag.
-                    'css-loader' // Parses css
-                ]
-            },
-            {
-                test: /\.(png|svg|jpg|gif|woff|woff2|eot|ttf|otf)$/,
-                use: [
-                    'file-loader'
-                ]
-            },
-            {
-                test: /\.(csv|tsv)$/,
-                use: [
-                    'csv-loader'
-                ]
-            },
-            {
-                test: /\.xml$/,
-                use: [
-                    'xml-loader'
-                ]
-            }
-        ]
-    }
+        /* This will generate a manifest.json file in the root output directory with a
+         * mapping of all source file names to their corresponding output file.
+         */
+        new ManifestPlugin(),
+
+        /*  HtmlWebpackPlugin by default will generate its own index.html file.
+         *  it automatically inject all necessary CSS, JS, manifest and favicon
+         *  files into the HTML file.
+         */
+        new HtmlWebpackPlugin({
+            title: 'Output Management'
+        })
+    ]
 };
