@@ -1,11 +1,12 @@
-const path                 = require('path');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
+const path                   = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const ManifestPlugin         = require('webpack-manifest-plugin');
 
 // Link: https://webpack.js.org/plugins/html-webpack-plugin/
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+    mode: 'development',
     entry: {
         //Webpack will parse these files and add them to the output folder which in this case is 'dist'
         app: './src/index.js',
@@ -24,6 +25,10 @@ module.exports = {
         // ALL the translated code will be put inside a folder named 'dist'. Can be named anything.
         path: path.resolve(__dirname, 'dist')
     },
+    devtool: "inline-source-map",
+    devServer: {
+        contentBase: "./dist"
+    },
     plugins: [
         // Remove any unused files in the 'dist' directory before building
         new CleanWebpackPlugin(),
@@ -38,7 +43,7 @@ module.exports = {
          *  files into the HTML file.
          */
         new HtmlWebpackPlugin({
-            title: 'Output Management'
+            title: 'Development'
         })
     ]
 };
