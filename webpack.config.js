@@ -27,7 +27,13 @@ module.exports = {
     },
     devtool: "inline-source-map",
     devServer: {
+
+        /* Tell the server where to serve content from.
+         * link https://webpack.js.org/configuration/dev-server/#devservercontentbase
+         */
         contentBase: "./dist",
+
+        // Enable webpack's Hot Module Replacement feature
         hot: true
     },
     module: {
