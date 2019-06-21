@@ -21,3 +21,15 @@ function component() {
 }
 
 document.body.appendChild(component());
+
+// When a change inside print.js is detected we tell webpack to accept the updated module.
+if(module.hot)
+{
+    // Watch the print.js file because I want to be able to detect changes and hot reload the module.
+    // Accept updates for the given dependencies and fire a callback to react to those updates.
+    module.hot.accept("./print.js", ()=>{
+        console.log("Accepting the updated printMe module!");
+        printMe();
+    });
+}
+

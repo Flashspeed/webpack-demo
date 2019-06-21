@@ -1,6 +1,7 @@
 const path                   = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ManifestPlugin         = require('webpack-manifest-plugin');
+const webpack                = require("webpack");
 
 // Link: https://webpack.js.org/plugins/html-webpack-plugin/
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -10,7 +11,6 @@ module.exports = {
     entry: {
         //Webpack will parse these files and add them to the output folder which in this case is 'dist'
         app: './src/index.js',
-        print: './src/print.js'
     },
     output: {
         // The name of the final js file to be embedded into the main html file
@@ -27,7 +27,8 @@ module.exports = {
     },
     devtool: "inline-source-map",
     devServer: {
-        contentBase: "./dist"
+        contentBase: "./dist",
+        hot: true
     },
     plugins: [
         // Remove any unused files in the 'dist' directory before building
@@ -43,7 +44,9 @@ module.exports = {
          *  files into the HTML file.
          */
         new HtmlWebpackPlugin({
-            title: 'Development'
-        })
+            title: 'Hot Module Replacement'
+        }),
+
+        new webpack.HotModuleReplacementPlugin()
     ]
 };
